@@ -12,7 +12,7 @@ interface CommonItem {
 }
 
 interface LinkItem extends CommonItem {
-  type: 'link';
+  type: 'link' | 'button';
   href: string;
   pathname: string;
   items?: never; // items should not be present in LinkItem
@@ -32,9 +32,21 @@ const NavbarItem = ({ type, label, href, pathname, items }: IProps) => {
     type === 'link' && href === pathname ? 'text-red-400 font-bold' : ''
   }`;
   return type && href ? (
-    <Button asChild variant={'ghost'} className={className}>
-      <Link to={href}>{label}</Link>
-    </Button>
+    type === 'button' ? (
+      <div className="flex items-center">
+        <Button
+          asChild
+          variant={'default'}
+          className={'h-12 rounded bg-red-500 hover:bg-red-600'}
+        >
+          <Link to={href}>{label}</Link>
+        </Button>
+      </div>
+    ) : (
+      <Button asChild variant={'ghost'} className={className}>
+        <Link to={href}>{label}</Link>
+      </Button>
+    )
   ) : (
     <Popover>
       <PopoverTrigger asChild>

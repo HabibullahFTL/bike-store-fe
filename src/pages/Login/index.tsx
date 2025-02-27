@@ -13,7 +13,7 @@ const LoginPage = () => {
         <AuthCard
           title={'Login to your account'}
           backButtonLabel="Don't have an account? Sign up"
-          backButtonHref="/sign-up"
+          backButtonHref="/registration"
         >
           <FormProvider {...formMethods}>
             <form

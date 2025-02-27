@@ -8,8 +8,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { InfoIcon, MenuIcon, PhoneIcon } from 'lucide-react';
-import { FaBicycle, FaShoppingCart, FaTools } from 'react-icons/fa';
+import { InfoIcon, LogInIcon, MenuIcon, PhoneIcon } from 'lucide-react';
+import { FaBicycle, FaTools } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import Container from './container';
 import NavbarItem from './navbar-item';
@@ -40,18 +40,18 @@ const Navbar = () => {
       icon: <FaTools className="mr-2 h-4 w-4" />,
     },
     {
-      id: 'shop',
-      type: 'link',
-      label: 'SHOP',
-      href: '/#shop',
-      icon: <FaShoppingCart className="mr-2 h-4 w-4" />,
-    },
-    {
       id: 'contact',
       type: 'link',
       label: 'CONTACT',
       href: '/#contact',
       icon: <PhoneIcon className="mr-2 h-4 w-4" />,
+    },
+    {
+      id: 'login',
+      type: 'button',
+      label: 'LOGIN',
+      href: '/login',
+      icon: <LogInIcon className="mr-2 h-4 w-4" />,
     },
   ];
 
