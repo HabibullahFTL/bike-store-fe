@@ -7,10 +7,14 @@ import { signupValidationSchema } from '@/utils/validations/auth-validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const RegistrationPage = () => {
   const [signupMutation] = useRegistrationMutation();
+
+  const navigate = useNavigate();
+
   const formMethods = useForm<z.infer<typeof signupValidationSchema>>({
     defaultValues: {
       name: '',
@@ -25,16 +29,27 @@ const RegistrationPage = () => {
 
     try {
       const response = await signupMutation(values).unwrap();
-      console.log({ response });
-      toast.success(response.message || 'Your account created successfully.', {
-        id: 'create-account',
-      });
+      if (response?.success) {
+        toast.success(
+          `${
+            response.message || 'Your account created successfully.'
+          } Login now`,
+          {
+            id: 'create-account',
+            duration: 5000,
+          }
+        );
+        navigate('/login');
+      }
     } catch (error) {
-      console.log({ error });
-
-      toast.error((error as Error).message || 'Something went wrong', {
-        id: 'create-account',
-      });
+      toast.error(
+        (error as { data: { message: string } })?.data?.message ||
+          'Something went wrong',
+        {
+          id: 'create-account',
+          duration: 3000,
+        }
+      );
     }
   };
 
