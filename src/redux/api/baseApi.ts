@@ -13,7 +13,7 @@ import { logout, setUser } from '../features/auth/authSlice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseApiURL,
-  // credentials: 'include',
+  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
 

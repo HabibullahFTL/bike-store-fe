@@ -3,14 +3,18 @@ import FormInput from '@/components/form/form-input';
 import Container from '@/components/layouts/main-layout/container';
 import { Button } from '@/components/ui/button';
 import { useRegistrationMutation } from '@/redux/features/auth/authApi';
+import { selectAuth } from '@/redux/features/auth/authSlice';
+import { useAppSelector } from '@/redux/hooks';
 import { signupValidationSchema } from '@/utils/validations/auth-validations';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const RegistrationPage = () => {
+  const { user } = useAppSelector(selectAuth);
   const [signupMutation] = useRegistrationMutation();
 
   const navigate = useNavigate();
@@ -52,6 +56,12 @@ const RegistrationPage = () => {
       );
     }
   };
+
+  useEffect(() => {
+    if (user?._id) {
+      navigate('/');
+    }
+  }, [navigate, user?._id]);
 
   return (
     <Container>

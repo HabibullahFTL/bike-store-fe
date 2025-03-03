@@ -2,11 +2,69 @@ import AuthCard from '@/components/auth-cards/auth-card';
 import FormInput from '@/components/form/form-input';
 import Container from '@/components/layouts/main-layout/container';
 import { Button } from '@/components/ui/button';
+import { useLoginMutation } from '@/redux/features/auth/authApi';
+import { selectAuth, setUser } from '@/redux/features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { loginValidationSchema } from '@/utils/validations/auth-validations';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const LoginPage = () => {
-  const formMethods = useForm();
-  const onSubmit = () => {};
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector(selectAuth);
+
+  const [loginMutation] = useLoginMutation();
+
+  const navigate = useNavigate();
+
+  const formMethods = useForm<z.infer<typeof loginValidationSchema>>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: zodResolver(loginValidationSchema),
+  });
+
+  const onSubmit = async (values: z.infer<typeof loginValidationSchema>) => {
+    toast.loading('Logging in to your account...', { id: 'login' });
+
+    try {
+      const response = await loginMutation(values).unwrap();
+      if (response?.success) {
+        dispatch(
+          setUser({
+            user: response?.data?.user,
+            token: response?.data?.access_token,
+          })
+        );
+        navigate('/');
+        toast.success(response.message || 'Logged in successfully.', {
+          id: 'login',
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      toast.error(
+        (error as { data: { message: string } })?.data?.message ||
+          'Something went wrong',
+        {
+          id: 'login',
+          duration: 3000,
+        }
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (user?._id) {
+      navigate('/');
+    }
+  }, [navigate, user?._id]);
+
   return (
     <Container>
       <div className="py-20 w-full flex justify-center">

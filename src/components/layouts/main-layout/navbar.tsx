@@ -8,6 +8,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { selectAuth } from '@/redux/features/auth/authSlice';
+import { useAppSelector } from '@/redux/hooks';
 import { InfoIcon, LogInIcon, MenuIcon, PhoneIcon } from 'lucide-react';
 import { FaBicycle, FaTools } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
@@ -16,6 +18,7 @@ import NavbarItem from './navbar-item';
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const { user } = useAppSelector(selectAuth);
 
   const navbarLinks = [
     {
@@ -49,8 +52,8 @@ const Navbar = () => {
     {
       id: 'login',
       type: 'button',
-      label: 'LOGIN',
-      href: '/login',
+      label: user?._id ? 'PROFILE' : 'LOGIN',
+      href: user?._id ? '/profile' : '/login',
       icon: <LogInIcon className="mr-2 h-4 w-4" />,
     },
   ];
