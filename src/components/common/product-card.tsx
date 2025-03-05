@@ -16,13 +16,13 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Card className="w-full max-w-sm border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-white py-2 gap-0">
+    <Card className="w-full max-w-sm border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-white py-4 gap-2 px-4">
       {/* Product Image */}
-      <CardHeader className="relative">
+      <CardHeader className="relative p-0">
         <img
           src={product.image || bikeImage}
           alt={product.name}
-          className="w-full h-56 object-cover rounded-t-xl"
+          className="w-full h-56 object-contain bg-accent rounded-xl"
         />
         {/* Stock Badge */}
         <Badge
@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </CardHeader>
 
       {/* Product Details */}
-      <CardContent className="p-4">
+      <CardContent className="p-0">
         <h2 className="text-lg font-semibold text-gray-800 truncate">
           {product.name}
         </h2>
