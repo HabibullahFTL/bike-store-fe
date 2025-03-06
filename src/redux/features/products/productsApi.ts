@@ -13,7 +13,7 @@ const productsApi = baseApi.injectEndpoints({
         const category = args?.category || '';
         const brand = args?.brand || '';
         const minPrice = (args?.minPrice || '0')?.toString();
-        const maxPrice = (args?.maxPrice || '100000')?.toString();
+        const maxPrice = (args?.maxPrice || '10000')?.toString();
         const inStock = (args?.inStock || true)?.toString();
 
         const queryObj = {

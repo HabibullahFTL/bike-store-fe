@@ -57,7 +57,7 @@ const ProductDetailsPage = () => {
 
           <Button
             className="mt-6 w-full md:w-auto bg-red-500 hover:bg-red-600"
-            onClick={() => navigate(`/checkout?productId=${productId}`)}
+            onClick={() => navigate(`/checkout/${productId}`)}
           >
             <FaCartPlus /> Buy Now
           </Button>

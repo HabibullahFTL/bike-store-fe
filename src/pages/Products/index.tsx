@@ -1,6 +1,5 @@
 import ProductCard from '@/components/common/product-card';
 import Container from '@/components/layouts/main-layout/container';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import {
   Pagination,
@@ -11,29 +10,47 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useGetAllProductsQuery } from '@/redux/features/products/productsApi';
 import { TProduct } from '@/types/common';
 import Slider from 'rc-slider';
 import { useState } from 'react';
+import {
+  brandOptions,
+  categoryOptions,
+  sortFormats,
+  sortOptions,
+} from './default-data';
 
 const ProductsPage = () => {
   const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('');
-  const [brand, setBrand] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 100000]);
-  const [inStock, setInStock] = useState(false);
+  const [category, setCategory] = useState('-');
+  const [brand, setBrand] = useState('-');
+  const [priceRange, setPriceRange] = useState([0, 10000]);
+  const [inStock] = useState(false);
+  const [sort, setSort] = useState<string>('');
   const [page, setPage] = useState(1);
-  const limit = 4;
+  const limit = 10;
 
   const { data, isFetching, isLoading } = useGetAllProductsQuery({
     limit,
     page,
     search: search || undefined,
-    category: category || undefined,
-    brand: brand || undefined,
+    category: category !== '-' ? category : undefined,
+    brand: brand !== '-' ? brand : undefined,
     minPrice: priceRange[0],
     maxPrice: priceRange[1],
     inStock: inStock ? true : undefined,
+    sortBy: sortFormats?.[sort as keyof typeof sortFormats]?.sortBy,
+    sortOrder: sortFormats?.[sort as keyof typeof sortFormats]?.sortOrder as
+      | 'asc'
+      | 'desc',
   });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,32 +72,44 @@ const ProductsPage = () => {
           onChange={handleSearch}
           className="col-span-1 md:col-span-2"
         />
-        <select
-          className="border rounded-md px-4 py-2"
+
+        <Select
           value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
+          onValueChange={(value) => {
+            setCategory(value);
             setPage(1);
           }}
         >
-          <option value="">All Categories</option>
-          <option value="Mountain">Mountain</option>
-          <option value="Road">Road</option>
-          <option value="Hybrid">Hybrid</option>
-        </select>
-        <select
-          className="border rounded-md px-4 py-2"
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="All Brands" />
+          </SelectTrigger>
+          <SelectContent>
+            {categoryOptions?.map((option) => (
+              <SelectItem key={option?.value} value={option?.value}>
+                {option?.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Select
           value={brand}
-          onChange={(e) => {
-            setBrand(e.target.value);
+          onValueChange={(value) => {
+            setBrand(value);
             setPage(1);
           }}
         >
-          <option value="">All Brands</option>
-          <option value="Giant">Giant</option>
-          <option value="Trek">Trek</option>
-          <option value="Cannondale">Cannondale</option>
-        </select>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="All Brands" />
+          </SelectTrigger>
+          <SelectContent>
+            {brandOptions?.map((option) => (
+              <SelectItem key={option?.value} value={option?.value}>
+                {option?.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Price & Stock Filters */}
@@ -92,8 +121,8 @@ const ProductsPage = () => {
           <Slider
             range
             min={0}
-            max={100000}
-            step={1000}
+            max={10000}
+            step={50}
             value={priceRange}
             onChange={(values) => setPriceRange(values as number[])}
             styles={{
@@ -104,17 +133,24 @@ const ProductsPage = () => {
           />
         </div>
         <div className="flex items-center gap-2">
-          <Checkbox
-            id="inStock"
-            checked={inStock}
-            onCheckedChange={(checked: boolean) => {
-              setInStock(checked);
+          <Select
+            value={sort}
+            onValueChange={(value) => {
+              setSort(value);
               setPage(1);
             }}
-          />
-          <label htmlFor="inStock" className="text-sm">
-            In Stock Only
-          </label>
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort products" />
+            </SelectTrigger>
+            <SelectContent>
+              {sortOptions?.map((option) => (
+                <SelectItem key={option?.value} value={option?.value}>
+                  {option?.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
