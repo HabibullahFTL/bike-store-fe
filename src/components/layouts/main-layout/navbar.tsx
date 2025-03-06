@@ -25,7 +25,7 @@ const Navbar = () => {
       id: 'about',
       type: 'link',
       label: 'ABOUT US',
-      href: '/#about',
+      href: '/about',
       icon: <InfoIcon className="mr-2 h-4 w-4" />,
     },
     {

@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 
 const FeaturedProducts = () => {
   const { data } = useGetAllProductsQuery({
-    limit: '6',
-    page: '1',
+    limit: 6,
+    page: 1,
   });
 
   console.log({ data });

@@ -1,4 +1,5 @@
 import ProtectedRoute from '@/components/layouts/protected-route';
+import AboutPage from '@/pages/About';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
 import ProductDetailsPage from '@/pages/ProductDetails';
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: 'about',
+        element: <AboutPage />,
       },
       {
         path: 'login',
