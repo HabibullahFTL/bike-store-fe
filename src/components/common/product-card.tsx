@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/card';
 import { TProduct } from '@/types/common';
 import { Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ProductCardProps {
   product: TProduct;
@@ -16,7 +17,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <Card className="w-full max-w-sm border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-white py-4 gap-2 px-4">
+    <Card className="w-full border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-white py-4 gap-2 px-4">
       {/* Product Image */}
       <CardHeader className="relative p-0">
         <img
@@ -48,15 +49,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </CardContent>
 
       {/* Actions */}
-      <CardFooter className="flex justify-between gap-2 px-4 pb-4">
+      <CardFooter className="flex justify-between gap-2 px-0 pb-0">
         {/* <Button className="flex items-center gap-2 cursor-pointer">
           <ShoppingCart size={18} /> Add to Cart
         </Button> */}
         <Button
+          asChild
           variant="destructive"
           className="flex w-full bg-red-500 hover:bg-red-600 items-center gap-2 cursor-pointer"
         >
-          <Eye size={18} /> View Details
+          <Link to={`/products/${product?._id}`}>
+            <Eye size={18} /> View Details
+          </Link>
         </Button>
       </CardFooter>
     </Card>

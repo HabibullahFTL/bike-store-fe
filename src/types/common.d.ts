@@ -1,10 +1,14 @@
-export interface TQuery {
-  limit?: string;
-  page?: string;
-  searchTerm?: string;
-  searchValue?: string;
+export interface TProductQuery {
+  limit?: number;
+  page?: number;
+  search?: string;
   sortBy?: string;
   sortOrder?: 'asc' | 'desc';
+  category?: string;
+  brand?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  inStock?: boolean;
 }
 
 export interface TProduct {

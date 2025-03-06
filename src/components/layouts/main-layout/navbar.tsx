@@ -32,7 +32,7 @@ const Navbar = () => {
       id: 'products',
       type: 'link',
       label: 'PRODUCTS',
-      href: '/#products',
+      href: '/products',
       icon: <FaBicycle className="mr-2 h-4 w-4" />,
     },
     {
@@ -63,73 +63,71 @@ const Navbar = () => {
       {/* Main Navbar */}
       <nav className="bg-white shadow-md">
         <Container>
-          <div className="mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between gap-x-4 h-14 md:h-16 lg:h-20">
-              {/* Logo */}
-              <Link to={'/'} className="flex-shrink-0">
-                <img
-                  className="h-9 sm:h-10 md:h-11 lg:h-12 w-auto"
-                  src={logo}
-                  alt="My Bike Logo"
+          <div className="flex items-center justify-between gap-x-4 h-14 md:h-16 lg:h-20">
+            {/* Logo */}
+            <Link to={'/'} className="flex-shrink-0">
+              <img
+                className="h-9 sm:h-10 md:h-11 lg:h-12 w-auto"
+                src={logo}
+                alt="My Bike Logo"
+              />
+            </Link>
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex lg:space-x-2 h-full">
+              {navbarLinks?.map((item) => (
+                <NavbarItem
+                  key={item?.href}
+                  type={item?.type as 'link'}
+                  label={item?.label}
+                  href={item?.href}
+                  pathname={pathname}
                 />
-              </Link>
+              ))}
+            </div>
 
-              {/* Desktop Menu */}
-              <div className="hidden md:flex lg:space-x-2 h-full">
-                {navbarLinks?.map((item) => (
-                  <NavbarItem
-                    key={item?.href}
-                    type={item?.type as 'link'}
-                    label={item?.label}
-                    href={item?.href}
-                    pathname={pathname}
-                  />
-                ))}
-              </div>
-
-              {/* Search Icon & Mobile Menu Toggle */}
-              <div className="flex items-center md:hidden space-x-4">
-                <Dialog>
-                  <SheetTrigger
-                    className="min-[1024px]:hidden p-2 transition"
-                    asChild
+            {/* Search Icon & Mobile Menu Toggle */}
+            <div className="flex items-center md:hidden space-x-4">
+              <Dialog>
+                <SheetTrigger
+                  className="min-[1024px]:hidden p-2 transition"
+                  asChild
+                >
+                  <Button
+                    variant={'ghost'}
+                    className="text-gray-500 px-2 hover:text-gray-700 focus:outline-none"
                   >
-                    <Button
-                      variant={'ghost'}
-                      className="text-gray-500 px-2 hover:text-gray-700 focus:outline-none"
-                    >
-                      <MenuIcon className="!size-7" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left">
-                    <SheetHeader>
-                      <Link to="/">
-                        <SheetTitle>My Bike</SheetTitle>
-                      </Link>
-                    </SheetHeader>
-                    <div className="flex flex-col space-y-3 mt-[1rem]">
-                      {navbarLinks?.map((menuItem) => {
-                        if (menuItem?.type === 'link') {
-                          return (
-                            <DialogClose key={menuItem?.href} asChild>
-                              <Link to={menuItem?.href}>
-                                <Button variant="outline" className="w-full">
-                                  {menuItem?.icon}
-                                  {menuItem?.label}
-                                </Button>
-                              </Link>
-                            </DialogClose>
-                          );
-                        } else {
-                          return (
-                            <Separator key={menuItem?.id} className="my-3" />
-                          );
-                        }
-                      })}
-                    </div>
-                  </SheetContent>
-                </Dialog>
-              </div>
+                    <MenuIcon className="!size-7" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <SheetHeader>
+                    <Link to="/">
+                      <SheetTitle>My Bike</SheetTitle>
+                    </Link>
+                  </SheetHeader>
+                  <div className="flex flex-col space-y-3 mt-[1rem]">
+                    {navbarLinks?.map((menuItem) => {
+                      if (menuItem?.type === 'link') {
+                        return (
+                          <DialogClose key={menuItem?.href} asChild>
+                            <Link to={menuItem?.href}>
+                              <Button variant="outline" className="w-full">
+                                {menuItem?.icon}
+                                {menuItem?.label}
+                              </Button>
+                            </Link>
+                          </DialogClose>
+                        );
+                      } else {
+                        return (
+                          <Separator key={menuItem?.id} className="my-3" />
+                        );
+                      }
+                    })}
+                  </div>
+                </SheetContent>
+              </Dialog>
             </div>
           </div>
         </Container>

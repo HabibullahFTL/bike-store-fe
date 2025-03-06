@@ -1,24 +1,34 @@
-import { TMeta, TProduct, TQuery } from '@/types/common';
+import { TMeta, TProduct, TProductQuery } from '@/types/common';
 import { baseApi } from '../../api/baseApi';
 
 const productsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllProducts: builder.query({
-      query: (args?: TQuery) => {
-        const page = args?.page || '1';
-        const limit = args?.limit || '10';
+      query: (args?: TProductQuery) => {
+        const page = (args?.page || '1')?.toString();
+        const limit = (args?.limit || '10')?.toString();
         const sortBy = args?.sortBy || 'createdAt';
         const sortOrder = args?.sortOrder || 'desc';
-        const searchTerm = args?.searchTerm || '';
-        const searchValue = args?.searchValue || '';
+        const search = args?.search || '';
+        const category = args?.category || '';
+        const brand = args?.brand || '';
+        const minPrice = (args?.minPrice || '0')?.toString();
+        const maxPrice = (args?.maxPrice || '100000')?.toString();
+        const inStock = (args?.inStock || true)?.toString();
+
+        console.log({ inStock });
 
         const queryObj = {
           page,
           limit,
           sortBy,
           sortOrder,
-          searchTerm,
-          searchValue,
+          search,
+          category,
+          brand,
+          minPrice,
+          maxPrice,
+          inStock,
         };
 
         const params = new URLSearchParams();

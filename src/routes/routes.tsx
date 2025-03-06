@@ -1,6 +1,7 @@
 import ProtectedRoute from '@/components/layouts/protected-route';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
+import ProductsPage from '@/pages/Products';
 import ProfilePage from '@/pages/Profile';
 import RegistrationPage from '@/pages/Registration';
 import { createBrowserRouter } from 'react-router-dom';
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
             <ProfilePage />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: 'products',
+        element: <ProductsPage />,
       },
     ],
   },

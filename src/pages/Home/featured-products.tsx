@@ -1,5 +1,8 @@
 import ProductCard from '@/components/common/product-card';
+import { Button } from '@/components/ui/button';
 import { useGetAllProductsQuery } from '@/redux/features/products/productsApi';
+import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const FeaturedProducts = () => {
   const { data } = useGetAllProductsQuery({
@@ -24,6 +27,18 @@ const FeaturedProducts = () => {
             <ProductCard key={product?._id} product={product} />
           ))}
         </div>
+
+        <Button
+          asChild
+          variant={'default'}
+          className={
+            'h-12 !px-10 rounded uppercase text-md bg-red-500 hover:bg-red-600 mt-5'
+          }
+        >
+          <Link to={'/products'}>
+            View All <FaArrowRight />
+          </Link>
+        </Button>
       </div>
     </section>
   );
