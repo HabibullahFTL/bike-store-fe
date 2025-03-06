@@ -1,6 +1,5 @@
 import ProductCard from '@/components/common/product-card';
 import Container from '@/components/layouts/main-layout/container';
-import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -10,23 +9,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { useGetAllProductsQuery } from '@/redux/features/products/productsApi';
 import { TProduct } from '@/types/common';
-import Slider from 'rc-slider';
 import { useState } from 'react';
-import {
-  brandOptions,
-  categoryOptions,
-  sortFormats,
-  sortOptions,
-} from './default-data';
+import { sortFormats } from './default-data';
+import SearchAndFilter from './search-and-filter';
 
 const ProductsPage = () => {
   const [search, setSearch] = useState('');
@@ -64,100 +51,25 @@ const ProductsPage = () => {
     <Container className="mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">All Products</h1>
 
-      {/* Search & Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Input
-          placeholder="Search by name, brand, or category"
-          value={search}
-          onChange={handleSearch}
-          className="col-span-1 md:col-span-2"
-        />
-
-        <Select
-          value={category}
-          onValueChange={(value) => {
-            setCategory(value);
-            setPage(1);
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="All Brands" />
-          </SelectTrigger>
-          <SelectContent>
-            {categoryOptions?.map((option) => (
-              <SelectItem key={option?.value} value={option?.value}>
-                {option?.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        <Select
-          value={brand}
-          onValueChange={(value) => {
-            setBrand(value);
-            setPage(1);
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="All Brands" />
-          </SelectTrigger>
-          <SelectContent>
-            {brandOptions?.map((option) => (
-              <SelectItem key={option?.value} value={option?.value}>
-                {option?.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Price & Stock Filters */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 mb-6">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-medium">
-            Price Range: ৳{priceRange[0]} - ৳{priceRange[1]}
-          </span>
-          <Slider
-            range
-            min={0}
-            max={10000}
-            step={50}
-            value={priceRange}
-            onChange={(values) => setPriceRange(values as number[])}
-            styles={{
-              track: { backgroundColor: 'black' },
-              handle: { borderColor: 'black', backgroundColor: 'black' },
-              rail: { backgroundColor: '#ccc' },
-            }}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <Select
-            value={sort}
-            onValueChange={(value) => {
-              setSort(value);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Sort products" />
-            </SelectTrigger>
-            <SelectContent>
-              {sortOptions?.map((option) => (
-                <SelectItem key={option?.value} value={option?.value}>
-                  {option?.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
+      {/* Search and filter  */}
+      <SearchAndFilter
+        sort={sort}
+        brand={brand}
+        search={search}
+        category={category}
+        priceRange={priceRange}
+        setPage={setPage}
+        setSort={setSort}
+        setBrand={setBrand}
+        setCategory={setCategory}
+        setPriceRange={setPriceRange}
+        handleSearch={handleSearch}
+      />
 
       {/* Product Listing */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 min-h-96">
         {isLoading ? (
-          <p className="col-span-full text-center text-gray-500">
+          <p className="col-span-full text-center text-gray-500 h-full flex justify-center items-center">
             Loading products...
           </p>
         ) : (data?.data || []).length > 0 ? (
@@ -165,7 +77,7 @@ const ProductsPage = () => {
             <ProductCard key={product._id} product={product} />
           ))
         ) : (
-          <p className="col-span-full text-center text-gray-500">
+          <p className="col-span-full text-center text-gray-500 h-full flex justify-center items-center">
             No products found.
           </p>
         )}

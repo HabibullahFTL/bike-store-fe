@@ -6,7 +6,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { verifyToken } from '@/utils/common/verify-token';
 import { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 interface IProps {
   children: ReactNode;
@@ -14,6 +14,8 @@ interface IProps {
 }
 
 const ProtectedRoute = ({ children, role }: IProps) => {
+  const location = useLocation();
+
   const token = useAppSelector(selectCurrentToken);
 
   let user: TUser | undefined = undefined;
@@ -24,15 +26,22 @@ const ProtectedRoute = ({ children, role }: IProps) => {
 
   const dispatch = useAppDispatch();
 
+  const params = new URLSearchParams();
+  if (location?.pathname) {
+    params.append('to', location.pathname);
+  }
+
+  const loginURL = `/login?${params.toString()}`;
+
   // If role is defined, and no user role matched
   if (role && (!user?.role || user?.role !== role)) {
     dispatch(logout());
-    return <Navigate to={'/login'} replace={true} />;
+    return <Navigate to={loginURL} replace={true} />;
   }
 
   // If token is not found
   if (!token) {
-    return <Navigate to={'/login'} replace={true} />;
+    return <Navigate to={loginURL} replace={true} />;
   }
 
   // Giving access for valid user

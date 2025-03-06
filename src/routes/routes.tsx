@@ -1,5 +1,6 @@
 import ProtectedRoute from '@/components/layouts/protected-route';
 import AboutPage from '@/pages/About';
+import CheckoutPage from '@/pages/Checkout';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
 import ProductDetailsPage from '@/pages/ProductDetails';
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: 'products/:productId',
         element: <ProductDetailsPage />,
+      },
+      {
+        path: 'checkout/:productId',
+        element: (
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

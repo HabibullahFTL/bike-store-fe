@@ -10,16 +10,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const redirectTo = queryParams.get('to') || '/';
+
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(selectAuth);
 
   const [loginMutation] = useLoginMutation();
-
-  const navigate = useNavigate();
 
   const formMethods = useForm<z.infer<typeof loginValidationSchema>>({
     defaultValues: {
@@ -41,7 +44,7 @@ const LoginPage = () => {
             token: response?.data?.access_token,
           })
         );
-        navigate('/');
+        navigate(redirectTo);
         toast.success(response.message || 'Logged in successfully.', {
           id: 'login',
           duration: 5000,
@@ -61,9 +64,9 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (user?._id) {
-      navigate('/');
+      navigate(redirectTo);
     }
-  }, [navigate, user?._id]);
+  }, [navigate, user?._id, redirectTo]);
 
   return (
     <Container>

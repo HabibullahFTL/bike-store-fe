@@ -15,6 +15,8 @@ interface IProps {
   label?: string | ReactNode;
   placeholder?: string;
   className?: string;
+  min?: number;
+  max?: number;
   onChange?: (value: string) => void;
 }
 
@@ -26,6 +28,8 @@ const FormInput = ({
   type = 'text', // Default type to 'text'
   placeholder,
   className,
+  min,
+  max,
   onChange,
 }: IProps) => {
   const {
@@ -80,6 +84,8 @@ const FormInput = ({
               )}
               {...{
                 ...field,
+                min,
+                max,
                 onChange: (e) => {
                   const value =
                     type === 'number'
