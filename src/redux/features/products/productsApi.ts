@@ -16,8 +16,6 @@ const productsApi = baseApi.injectEndpoints({
         const maxPrice = (args?.maxPrice || '100000')?.toString();
         const inStock = (args?.inStock || true)?.toString();
 
-        console.log({ inStock });
-
         const queryObj = {
           page,
           limit,
@@ -51,7 +49,18 @@ const productsApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getProductData: builder.query({
+      query: (args: { productId: string }) => ({
+        url: `/products/${args?.productId}`,
+        method: 'GET',
+      }),
+      providesTags: ['products'],
+      transformResponse: (response) => {
+        const result = response as unknown as { data: TProduct };
+        return result?.data;
+      },
+    }),
   }),
 });
 
-export const { useGetAllProductsQuery } = productsApi;
+export const { useGetAllProductsQuery, useGetProductDataQuery } = productsApi;
