@@ -4,6 +4,7 @@ import Container from '@/components/layouts/main-layout/container';
 import { Button } from '@/components/ui/button';
 import useConfirm from '@/hooks/use-confirm';
 import { selectCurrentUser } from '@/redux/features/auth/authSlice';
+import { useCreateOrderMutation } from '@/redux/features/orders/ordersApi';
 import { useGetProductDataQuery } from '@/redux/features/products/productsApi';
 import { useAppSelector } from '@/redux/hooks';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,6 +17,8 @@ import { z } from 'zod';
 
 const CheckoutPage = () => {
   const user = useAppSelector(selectCurrentUser);
+  const [createOrderMutation, { isLoading: isOrderCreating }] =
+    useCreateOrderMutation();
 
   const [orderInfo, setOrderInfo] = useState({ totalPrice: 0, quantity: 0 });
   const [ConfirmDialog, confirmOrder] = useConfirm({
@@ -37,9 +40,10 @@ const CheckoutPage = () => {
   const { productId } = useParams();
 
   // Fetch product details
-  const { data: product, isLoading } = useGetProductDataQuery({
-    productId: productId || '',
-  });
+  const { data: product, isLoading: isProductFetching } =
+    useGetProductDataQuery({
+      productId: productId || '',
+    });
 
   // Validation
   const validationSchema = z.object({
@@ -52,6 +56,7 @@ const CheckoutPage = () => {
     address: z
       .string({ required_error: 'Address is required' })
       .min(1, 'Address is required'),
+    phone: z.string({ required_error: 'Phone number is required' }),
     quantity: z
       .number({ invalid_type_error: 'Enter a valid number' })
       .min(1, 'Minimum order quantity must be 1'),
@@ -63,6 +68,7 @@ const CheckoutPage = () => {
       name: user?.name || '',
       email: user?.email || '',
       address: '',
+      phone: '',
       quantity: 1,
     },
     resolver: zodResolver(validationSchema),
@@ -83,13 +89,34 @@ const CheckoutPage = () => {
     const ok = await confirmOrder();
     if (!ok) return;
 
-    console.log({ ok });
+    toast.loading('Ordering the product...', { id: 'creating-order' });
+    createOrderMutation({
+      productId: product?._id,
+      quantity: Number(values?.quantity),
+      totalPrice: Number(getTotalPrice(+values?.quantity)),
+      shippingAddress: values?.address,
+      phone: values?.phone,
+    })
+      .then((response) => {
+        if (response?.data?.checkoutURL) {
+          toast.success('Pay now to confirm order', { id: 'creating-order' });
+          location.replace(response?.data?.checkoutURL);
+        } else {
+          toast.error('Failed to order the product', { id: 'creating-order' });
+        }
+      })
+      .catch(() => {
+        toast.error('Failed to order the product', { id: 'creating-order' });
+      })
+      .finally(() => {
+        toast.dismiss('creating-order');
+      });
   };
 
   const quantity = formMethod.watch('quantity') || 0;
   const totalPrice = getTotalPrice(quantity);
 
-  if (isLoading) {
+  if (isProductFetching) {
     return (
       <Container className="py-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -130,6 +157,7 @@ const CheckoutPage = () => {
             <p className="text-lg text-gray-600 mt-2 mb-6">৳{product.price}</p>
 
             <FormInput
+              disabled={isOrderCreating || isProductFetching}
               name="quantity"
               label="Quantity"
               type="number"
@@ -150,9 +178,23 @@ const CheckoutPage = () => {
               <h3 className="text-lg font-semibold text-gray-700">
                 User Details
               </h3>
-              <FormInput name="name" label="Full Name" />
-              <FormInput name="email" type="email" label="Email Address" />
-              <FormInput name="address" label="Shipping Address" />
+              <FormInput disabled name="name" label="Full Name" />
+              <FormInput
+                disabled
+                name="email"
+                type="email"
+                label="Email Address"
+              />
+              <FormInput
+                disabled={isOrderCreating || isProductFetching}
+                name="phone"
+                label="Phone number"
+              />
+              <FormInput
+                disabled={isOrderCreating || isProductFetching}
+                name="address"
+                label="Shipping Address"
+              />
             </div>
 
             <div className="mt-6">
@@ -163,10 +205,19 @@ const CheckoutPage = () => {
             </div>
 
             <Button
+              disabled={isOrderCreating || isProductFetching}
               type="submit"
               className="mt-6 w-full md:w-auto bg-red-500 hover:bg-red-600 h-10 !px-10 flex"
             >
-              <FaCartPlus /> Order Now
+              {isOrderCreating ? (
+                <>
+                  <FaCartPlus /> Ordering...
+                </>
+              ) : (
+                <>
+                  <FaCartPlus /> Order Now
+                </>
+              )}
             </Button>
           </form>
         </FormProvider>

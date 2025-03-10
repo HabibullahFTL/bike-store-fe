@@ -31,7 +31,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log({ result });
 
   // If found unauthorized then sending refresh token
   if (result?.error?.status === 401) {
@@ -42,13 +41,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 
     const data = await res.json();
 
-    if (data?.data?.accessToken) {
+    if (data?.data?.access_token) {
       const user = (api.getState() as RootState).auth.user;
 
       api.dispatch(
         setUser({
           user,
-          token: data.data.accessToken,
+          token: data.data.access_token,
         })
       );
 
