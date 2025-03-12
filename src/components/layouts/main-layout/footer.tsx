@@ -3,6 +3,7 @@ import { contactInfo } from '@/data/contact-info';
 import { ChevronRight } from 'lucide-react';
 import { FaFacebook, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Container from './container';
 
 const Footer = () => {
   const importantLinks = [
@@ -18,11 +19,11 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-900 text-white pt-10">
-      <div className="container mx-auto px-6 md:flex md:flex-col md:justify-between md:flex-wrap gap-8 xl:flex-row xl:gap-0">
+      <Container className="grid gap-6">
         <div className="flex gap-8 flex-col md:flex-row md:w-full xl:w-1/2">
           {/* Store Location */}
           <div className="md:w-1/2 xl:w-80">
-            <h3 className="text-lg font-semibold mb-4">Store Location</h3>
+            <h3 className="text-lg font-semibold mb-2">Store Location</h3>
             <div className="rounded-md overflow-hidden">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3111.5552058503877!2d90.48076097458896!3d23.678232728719614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b728b3b91cd1%3A0x1e7d1dd56b0fb82f!2sMy%20Bike%20Store!5e1!3m2!1sen!2sbd!4v1735327945301!5m2!1sen!2sbd"
@@ -38,7 +39,7 @@ const Footer = () => {
 
           {/* Important Links */}
           <div className="md:w-1/2 xl:w-auto flex-1">
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-2">Quick Links</h3>
             <ul className="space-y-2">
               {importantLinks.map((item) => (
                 <Link
@@ -56,7 +57,7 @@ const Footer = () => {
         <div className="flex gap-8 flex-col md:flex-row md:w-full xl:w-1/2">
           {/* About Us */}
           <div className="md:w-1/2">
-            <h3 className="text-lg font-semibold mb-4">About</h3>
+            <h3 className="text-lg font-semibold mb-2">About</h3>
             <ul className="space-y-2">
               {aboutLinks.map((item) => (
                 <Link
@@ -72,9 +73,9 @@ const Footer = () => {
 
           {/* Contact Us */}
           <div className="md:w-1/2">
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-            <p>{contactInfo?.name}</p>
-            <p className="flex flex-wrap gap-2">
+            <h3 className="text-lg font-semibold mb-2">Contact Us</h3>
+            <p className="pl-5 text-red-500">{contactInfo?.name}</p>
+            <p className="flex flex-wrap gap-2 pl-5">
               Tel:{' '}
               <a
                 href={`tel:${contactInfo?.phone}`}
@@ -90,7 +91,7 @@ const Footer = () => {
                 {contactInfo?.phone2}
               </a>
             </p>
-            <p>
+            <p className="pl-5">
               Email:{' '}
               <a
                 href={`mailto:${contactInfo?.email}`}
@@ -101,7 +102,7 @@ const Footer = () => {
             </p>
 
             {/* Social Media Links */}
-            <div className="flex space-x-4 mt-4">
+            <div className="flex space-x-4 mt-4 pl-5">
               <a
                 href="#"
                 target="_blank"
@@ -129,27 +130,27 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom Section */}
-      <div className="bg-gray-800 mt-10 py-4 text-center text-sm">
-        <p>
-          &copy; {new Date().getFullYear()}{' '}
-          <span className="text-red-500"> My Bike</span>. All rights reserved.
-        </p>
-        <p>
-          Developed by{' '}
-          <Button asChild variant="link" className="text-red-500 px-0 py-0">
-            <Link
-              to="https://www.habibullahftl.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Habibullah Bahar Piash
-            </Link>
-          </Button>
-        </p>
-      </div>
+        {/* Bottom Section */}
+        <div className="bg-gray-800 mt-10 py-4 text-center text-sm">
+          <p>
+            &copy; {new Date().getFullYear()}{' '}
+            <span className="text-red-500"> My Bike</span>. All rights reserved.
+          </p>
+          <p>
+            Developed by{' '}
+            <Button asChild variant="link" className="text-red-500 px-0 py-0">
+              <Link
+                to="https://www.habibullahftl.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Habibullah Bahar Piash
+              </Link>
+            </Button>
+          </p>
+        </div>
+      </Container>
     </footer>
   );
 };

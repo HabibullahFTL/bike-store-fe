@@ -3,6 +3,8 @@ import AboutPage from '@/pages/About';
 import CheckoutPage from '@/pages/Checkout';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
+import OrderDetailsPage from '@/pages/OrderDetails';
+import PaymentVerifyPage from '@/pages/PaymentVerify';
 import ProductDetailsPage from '@/pages/ProductDetails';
 import ProductsPage from '@/pages/Products';
 import ProfilePage from '@/pages/Profile';
@@ -52,6 +54,22 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <CheckoutPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'payment-verify',
+        element: (
+          <ProtectedRoute>
+            <PaymentVerifyPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'orders/:orderId',
+        element: (
+          <ProtectedRoute>
+            <OrderDetailsPage />
           </ProtectedRoute>
         ),
       },

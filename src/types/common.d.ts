@@ -31,3 +31,25 @@ export interface TMeta {
   totalItems: number;
   totalPages: number;
 }
+
+export interface IOrderData {
+  _id: string;
+  user: string;
+  product: string | TProduct;
+  quantity: number;
+  totalPrice: number;
+  shippingAddress: string;
+  transaction?: ITransaction;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export interface ITransaction {
+  id: string;
+  checkoutURL: string;
+  bank_status: string;
+  date_time: Date;
+  method: string;
+  payment_status: string;
+  sp_code: string;
+  status: null;
+}
