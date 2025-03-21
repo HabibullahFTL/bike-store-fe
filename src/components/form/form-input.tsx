@@ -101,6 +101,7 @@ const FormInput = ({
             {/* Show/Hide Password Button */}
             {type === 'password' && (
               <Button
+                tabIndex={-1}
                 type="button"
                 variant="ghost"
                 size={'sm'}

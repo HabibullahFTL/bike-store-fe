@@ -19,8 +19,8 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-900 text-white pt-10">
-      <Container className="grid gap-6">
-        <div className="flex gap-8 flex-col md:flex-row md:w-full xl:w-1/2">
+      <Container className="grid gap-6 xl:grid-cols-2">
+        <div className="flex gap-8 flex-col md:flex-row md:w-full">
           {/* Store Location */}
           <div className="md:w-1/2 xl:w-80">
             <h3 className="text-lg font-semibold mb-2">Store Location</h3>
@@ -54,7 +54,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="flex gap-8 flex-col md:flex-row md:w-full xl:w-1/2">
+        <div className="flex gap-8 flex-col md:flex-row md:w-full">
           {/* About Us */}
           <div className="md:w-1/2">
             <h3 className="text-lg font-semibold mb-2">About</h3>
@@ -130,27 +130,31 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
-        {/* Bottom Section */}
-        <div className="bg-gray-800 mt-10 py-4 text-center text-sm">
-          <p>
-            &copy; {new Date().getFullYear()}{' '}
-            <span className="text-red-500"> My Bike</span>. All rights reserved.
-          </p>
-          <p>
-            Developed by{' '}
-            <Button asChild variant="link" className="text-red-500 px-0 py-0">
-              <Link
-                to="https://www.habibullahftl.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Habibullah Bahar Piash
-              </Link>
-            </Button>
-          </p>
-        </div>
       </Container>
+      <div className="bg-gray-800 ">
+        <Container>
+          {/* Bottom Section */}
+          <div className="mt-10 py-4 text-center text-sm">
+            <p>
+              &copy; {new Date().getFullYear()}{' '}
+              <span className="text-red-500"> My Bike</span>. All rights
+              reserved.
+            </p>
+            <p>
+              Developed by{' '}
+              <Button asChild variant="link" className="text-red-500 px-0 py-0">
+                <Link
+                  to="https://www.habibullahftl.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Habibullah Bahar Piash
+                </Link>
+              </Button>
+            </p>
+          </div>
+        </Container>
+      </div>
     </footer>
   );
 };

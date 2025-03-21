@@ -37,9 +37,9 @@ const OrderDetailsPage = () => {
   }
 
   return (
-    <Container className="py-10 max-w-3xl mx-auto space-y-6">
+    <Container className="py-5 max-w-3xl mx-auto space-y-6">
       {/* Back Button */}
-      <Button className="mt-4 w-full md:w-auto bg-blue-500 hover:bg-blue-600 h-10 !px-10">
+      <Button className="mt-0 w-full md:w-auto bg-blue-500 hover:bg-blue-600 h-10 !px-10">
         Back to Orders
       </Button>
       <div className="grid gap-4 md:grid-cols-2">
@@ -93,7 +93,7 @@ const OrderDetailsPage = () => {
               Payment Status
             </h3>
             <p
-              className={`text-white px-3 py-1 rounded ${
+              className={`text-white inline-block px-3 py-1 rounded ${
                 order?.transaction?.payment_status === 'Paid'
                   ? 'bg-green-500'
                   : 'bg-red-500'

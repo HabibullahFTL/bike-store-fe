@@ -1,11 +1,24 @@
 import { Button } from '@/components/ui/button';
 import { logout, selectAuth } from '@/redux/features/auth/authSlice';
 import { useAppSelector } from '@/redux/hooks';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import ChangePasswordDialog from './change-password';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const { user } = useAppSelector(selectAuth);
+
+  const [showChangePasswordDialog, setShowChangePasswordDialog] =
+    useState(false);
+
+  const handleShowPasswordDialog = () => {
+    setShowChangePasswordDialog((status) => !status);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="max-w-md my-20 mx-auto p-6 bg-white rounded-2xl shadow-lg border border-gray-200">
@@ -34,14 +47,25 @@ const ProfilePage = () => {
         </tbody>
       </table>
 
-      <div className="mt-6 text-center">
+      <div className="mt-6 text-center flex gap-2 justify-center">
+        <Button
+          variant={'outline'}
+          className="border-red-500 hover:bg-red-500 cursor-pointer text-red-500 hover:text-white"
+          onClick={handleShowPasswordDialog}
+        >
+          Change Password
+        </Button>
         <Button
           className="bg-red-500 hover:bg-red-600 cursor-pointer"
-          onClick={() => dispatch(logout())}
+          onClick={handleLogout}
         >
           Logout
         </Button>
       </div>
+      <ChangePasswordDialog
+        showChangePasswordDialog={showChangePasswordDialog}
+        setShowChangePasswordDialog={setShowChangePasswordDialog}
+      />
     </div>
   );
 };
