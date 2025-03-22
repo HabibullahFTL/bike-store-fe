@@ -14,7 +14,7 @@ const PaymentVerifyPage = () => {
   useEffect(() => {
     if (!transactionId) {
       console.log('No order ID found');
-      navigate('/orders'); // Redirect if no order ID is found
+      navigate('/dashboard/orders'); // Redirect if no order ID is found
     }
   }, [transactionId, navigate]);
 

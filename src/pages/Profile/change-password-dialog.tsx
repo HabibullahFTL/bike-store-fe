@@ -8,9 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { useChangePasswordMutation } from '@/redux/features/auth/authApi';
 import { passwordValidationSchema } from '@/utils/validations/auth-validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 interface IProps {
@@ -22,6 +24,9 @@ const ChangePasswordDialog = ({
   showChangePasswordDialog,
   setShowChangePasswordDialog,
 }: IProps) => {
+  const [changePassword, { isLoading }] = useChangePasswordMutation();
+
+  // Validation schema
   const validationSchema = z
     .object({
       oldPassword: passwordValidationSchema,
@@ -42,7 +47,27 @@ const ChangePasswordDialog = ({
   });
 
   const onSubmit = (values: z.infer<typeof validationSchema>) => {
-    console.log({ values });
+    toast.loading('Changing password...', { id: 'change-password' });
+    changePassword({
+      newPassword: values.password,
+      oldPassword: values.oldPassword,
+    })
+      .unwrap()
+      .then((response) => {
+        console.log({ response });
+
+        formMethods.reset();
+        setShowChangePasswordDialog(false);
+        toast.success(response?.message || 'Password changed successfully', {
+          id: 'change-password',
+        });
+      })
+      .catch((error) => {
+        console.log({ error });
+        toast.error(error?.data?.message || 'Failed to change password', {
+          id: 'change-password',
+        });
+      });
   };
 
   return (
@@ -61,18 +86,21 @@ const ChangePasswordDialog = ({
           <form onSubmit={formMethods.handleSubmit(onSubmit)}>
             <div className="space-y-4 mb-4">
               <FormInput
+                disabled={isLoading}
                 type="password"
                 name="oldPassword"
                 label="Old Password"
                 placeholder="Enter your old password"
               />
               <FormInput
+                disabled={isLoading}
                 type="password"
                 name="password"
                 label="New password"
                 placeholder="Enter your new password"
               />
               <FormInput
+                disabled={isLoading}
                 type="password"
                 name="confirmPassword"
                 label="Confirm Password"
@@ -81,13 +109,18 @@ const ChangePasswordDialog = ({
             </div>
             <DialogFooter>
               <Button
+                disabled={isLoading}
                 type="button"
                 variant="outline"
                 onClick={() => setShowChangePasswordDialog(false)}
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-red-500 hover:bg-red-600">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="bg-red-500 hover:bg-red-600"
+              >
                 Change password
               </Button>
             </DialogFooter>

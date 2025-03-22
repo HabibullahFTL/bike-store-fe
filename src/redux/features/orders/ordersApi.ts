@@ -15,6 +15,32 @@ const ordersApi = baseApi.injectEndpoints({
         )?.data;
       },
     }),
+    orders: builder.query({
+      query: (args: { limit: number; page: number }) => {
+        const queryParams = new URLSearchParams();
+        queryParams.append('limit', (args?.limit || 10).toString());
+        queryParams.append('page', (args?.page || 1).toString());
+
+        return {
+          url: `/orders?${queryParams.toString()}`,
+          method: 'GET',
+        };
+      },
+      providesTags: ['orders'],
+      transformResponse: (response) => {
+        const result = response as unknown as {
+          data: IOrderData[];
+          meta: {
+            limit: number;
+            page: number;
+            totalPages: number;
+            totalResults: number;
+          };
+          success: boolean;
+        };
+        return result;
+      },
+    }),
     orderDetails: builder.query({
       query: (args: { orderId: string }) => ({
         url: `/orders/${args?.orderId}`,
@@ -50,4 +76,5 @@ export const {
   useCreateOrderMutation,
   useVerifyPaymentQuery,
   useOrderDetailsQuery,
+  useOrdersQuery,
 } = ordersApi;

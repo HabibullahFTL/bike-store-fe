@@ -3,7 +3,7 @@ import { logout, selectAuth } from '@/redux/features/auth/authSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import ChangePasswordDialog from './change-password';
+import ChangePasswordDialog from './change-password-dialog';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -21,11 +21,10 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="max-w-md my-20 mx-auto p-6 bg-white rounded-2xl shadow-lg border border-gray-200">
+    <>
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
         Profile
       </h2>
-
       <table className="w-full border-collapse">
         <tbody>
           <tr className="border-b">
@@ -46,7 +45,6 @@ const ProfilePage = () => {
           </tr>
         </tbody>
       </table>
-
       <div className="mt-6 text-center flex gap-2 justify-center">
         <Button
           variant={'outline'}
@@ -66,7 +64,7 @@ const ProfilePage = () => {
         showChangePasswordDialog={showChangePasswordDialog}
         setShowChangePasswordDialog={setShowChangePasswordDialog}
       />
-    </div>
+    </>
   );
 };
 

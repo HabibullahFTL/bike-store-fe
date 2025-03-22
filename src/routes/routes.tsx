@@ -1,8 +1,10 @@
+import DashboardLayout from '@/components/layouts/dashboard-layout';
 import ProtectedRoute from '@/components/layouts/protected-route';
 import AboutPage from '@/pages/About';
 import CheckoutPage from '@/pages/Checkout';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
+import MyOrders from '@/pages/MyOrders';
 import OrderDetailsPage from '@/pages/OrderDetails';
 import PaymentVerifyPage from '@/pages/PaymentVerify';
 import ProductDetailsPage from '@/pages/ProductDetails';
@@ -33,17 +35,40 @@ const router = createBrowserRouter([
         path: 'registration',
         element: <RegistrationPage />,
       },
-      {
-        path: 'profile',
-        element: (
-          <ProtectedRoute>
-            <ProfilePage />
-          </ProtectedRoute>
-        ),
-      },
+
       {
         path: 'products',
         element: <ProductsPage />,
+      },
+      {
+        path: 'dashboard',
+        element: <DashboardLayout />,
+        children: [
+          {
+            index: true,
+            element: (
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'my-orders',
+            element: (
+              <ProtectedRoute>
+                <MyOrders />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {
+        path: 'orders/:orderId',
+        element: (
+          <ProtectedRoute>
+            <OrderDetailsPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'products/:productId',
@@ -62,14 +87,6 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PaymentVerifyPage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: 'orders/:orderId',
-        element: (
-          <ProtectedRoute>
-            <OrderDetailsPage />
           </ProtectedRoute>
         ),
       },

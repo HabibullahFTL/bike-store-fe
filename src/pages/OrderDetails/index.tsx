@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useOrderDetailsQuery } from '@/redux/features/orders/ordersApi';
 import { TProduct } from '@/types/common';
-import { useParams } from 'react-router-dom';
+import { format } from 'date-fns';
+import { Link, useParams } from 'react-router-dom';
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
@@ -20,7 +21,7 @@ const OrderDetailsPage = () => {
 
   if (isLoading) {
     return (
-      <Container className="py-10 text-center">
+      <Container className="py-28 text-center">
         <p className="text-gray-500 text-lg">Loading order details...</p>
       </Container>
     );
@@ -37,10 +38,10 @@ const OrderDetailsPage = () => {
   }
 
   return (
-    <Container className="py-5 max-w-3xl mx-auto space-y-6">
+    <Container className="py-5 max-w-3xl mx-auto space-y-4">
       {/* Back Button */}
-      <Button className="mt-0 w-full md:w-auto bg-blue-500 hover:bg-blue-600 h-10 !px-10">
-        Back to Orders
+      <Button asChild className="mt-0 w-full md:w-auto h-10 !px-10">
+        <Link to="/dashboard/my-orders">Back to Orders</Link>
       </Button>
       <div className="grid gap-4 md:grid-cols-2">
         {/* Product Card */}
@@ -51,7 +52,7 @@ const OrderDetailsPage = () => {
                 Product Details
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex items-center space-x-4">
+            <CardContent className="flex space-x-4">
               <img
                 src={(order?.product as TProduct)?.image || bikeImage}
                 alt={(order?.product as TProduct)?.name || 'Product Image'}
@@ -61,8 +62,17 @@ const OrderDetailsPage = () => {
                 <h1 className="text-xl font-bold text-gray-800">
                   {(order?.product as TProduct)?.name}
                 </h1>
-                <p className="text-lg text-gray-600">৳{order?.totalPrice}</p>
-                <p className="text-gray-700">Quantity: {order.quantity}</p>
+                <div className="flex justify-between gap-2 items-center">
+                  <p className="text-sm text-gray-600">
+                    <span className="text-base">৳</span>{' '}
+                    {(order?.product as TProduct)?.price}
+                  </p>
+                  <p className="text-gray-700">Qty: {order.quantity}</p>
+                </div>
+                <p className="text-gray-700 text-end font-semibold">
+                  Total: <span className="text-base">৳</span>{' '}
+                  {order?.totalPrice}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -113,7 +123,7 @@ const OrderDetailsPage = () => {
           <div>
             <h3 className="text-lg font-semibold text-gray-700">Order Date</h3>
             <p className="text-gray-800">
-              {new Date(order?.createdAt).toLocaleString()}
+              {format(new Date(order?.createdAt), "dd-MMM-yyyy 'at' hh:mm a")}
             </p>
           </div>
         </div>
