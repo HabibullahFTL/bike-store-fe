@@ -14,8 +14,8 @@ const DashboardLayout = () => {
       title: 'My Orders',
     },
     {
-      href: '/dashboard/products',
-      title: 'Products',
+      href: '/dashboard/manage-orders',
+      title: 'Manage Orders',
     },
   ];
 

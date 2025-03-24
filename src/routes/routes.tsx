@@ -4,6 +4,7 @@ import AboutPage from '@/pages/About';
 import CheckoutPage from '@/pages/Checkout';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
+import ManageOrders from '@/pages/ManageOrders';
 import MyOrders from '@/pages/MyOrders';
 import OrderDetailsPage from '@/pages/OrderDetails';
 import PaymentVerifyPage from '@/pages/PaymentVerify';
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
             element: (
               <ProtectedRoute>
                 <MyOrders />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'manage-orders',
+            element: (
+              <ProtectedRoute>
+                <ManageOrders />
               </ProtectedRoute>
             ),
           },

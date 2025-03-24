@@ -12,7 +12,7 @@ import {
 import { useOrdersQuery } from '@/redux/features/orders/ordersApi';
 import { useState } from 'react';
 
-const MyOrders = () => {
+const ManageOrders = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
@@ -33,7 +33,11 @@ const MyOrders = () => {
       ) : (
         <div className="grid gap-3">
           {data?.data?.map((order) => (
-            <OrderCard key={order?._id} order={order} />
+            <OrderCard
+              key={order?._id}
+              order={order}
+              showManageOptions={true}
+            />
           ))}
         </div>
       )}
@@ -89,4 +93,4 @@ const MyOrders = () => {
   );
 };
 
-export default MyOrders;
+export default ManageOrders;
