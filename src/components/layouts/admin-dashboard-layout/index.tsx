@@ -2,16 +2,20 @@ import { Button } from '@/components/ui/button';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import Container from '../main-layout/container';
 
-const DashboardLayout = () => {
+const AdminDashboardLayout = () => {
   const { pathname } = useLocation();
   const menuItems = [
     {
-      href: '/profile',
+      href: '/admin/profile',
       title: 'Profile Settings',
     },
     {
-      href: '/profile/my-orders',
-      title: 'My Orders',
+      href: '/admin/manage-users',
+      title: 'Manage Users',
+    },
+    {
+      href: '/admin/manage-orders',
+      title: 'Manage Orders',
     },
   ];
 
@@ -38,4 +42,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default AdminDashboardLayout;

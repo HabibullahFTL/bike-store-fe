@@ -2,13 +2,16 @@ import bikeImage from '@/assets/bike-image.png';
 import Container from '@/components/layouts/main-layout/container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { selectAuth } from '@/redux/features/auth/authSlice';
 import { useOrderDetailsQuery } from '@/redux/features/orders/ordersApi';
+import { useAppSelector } from '@/redux/hooks';
 import { TProduct } from '@/types/common';
 import { format } from 'date-fns';
 import { Link, useParams } from 'react-router-dom';
 
 const OrderDetailsPage = () => {
   const { orderId } = useParams();
+  const { user } = useAppSelector(selectAuth);
 
   // Fetch order details
   const {
@@ -41,7 +44,15 @@ const OrderDetailsPage = () => {
     <Container className="py-5 max-w-3xl mx-auto space-y-4">
       {/* Back Button */}
       <Button asChild className="mt-0 w-full md:w-auto h-10 !px-10">
-        <Link to="/dashboard/my-orders">Back to Orders</Link>
+        <Link
+          to={
+            user?.role === 'admin'
+              ? '/admin/manage-orders'
+              : '/profile/my-orders'
+          }
+        >
+          Back to Orders
+        </Link>
       </Button>
       <div className="grid gap-4 md:grid-cols-2">
         {/* Product Card */}

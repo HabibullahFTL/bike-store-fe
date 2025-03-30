@@ -6,13 +6,14 @@ import {
 } from '@/components/ui/popover';
 import { ChevronDownIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import UserMenu from './user-menu';
 
 interface CommonItem {
   label: string;
 }
 
 interface LinkItem extends CommonItem {
-  type: 'link' | 'button';
+  type: 'link' | 'button' | 'user-menu';
   href: string;
   pathname: string;
   items?: never; // items should not be present in LinkItem
@@ -42,6 +43,8 @@ const NavbarItem = ({ type, label, href, pathname, items }: IProps) => {
           <Link to={href}>{label}</Link>
         </Button>
       </div>
+    ) : type === 'user-menu' ? (
+      <UserMenu />
     ) : (
       <Button asChild variant={'ghost'} className={className}>
         <Link to={href}>{label}</Link>

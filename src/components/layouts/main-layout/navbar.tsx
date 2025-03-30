@@ -11,7 +11,7 @@ import {
 import { selectAuth } from '@/redux/features/auth/authSlice';
 import { useAppSelector } from '@/redux/hooks';
 import { InfoIcon, LogInIcon, MenuIcon, PhoneIcon } from 'lucide-react';
-import { FaBicycle, FaTools } from 'react-icons/fa';
+import { FaBicycle } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import Container from './container';
 import NavbarItem from './navbar-item';
@@ -36,13 +36,6 @@ const Navbar = () => {
       icon: <FaBicycle className="mr-2 h-4 w-4" />,
     },
     {
-      id: 'services',
-      type: 'link',
-      label: 'SERVICES',
-      href: '/#services',
-      icon: <FaTools className="mr-2 h-4 w-4" />,
-    },
-    {
       id: 'contact',
       type: 'link',
       label: 'CONTACT',
@@ -51,8 +44,8 @@ const Navbar = () => {
     },
     {
       id: 'login',
-      type: 'button',
-      label: user?._id ? 'PROFILE' : 'LOGIN',
+      type: user?._id ? 'user-menu' : 'button',
+      label: user?._id ? 'Dashboard' : 'LOGIN',
       href: user?._id ? '/profile' : '/login',
       icon: <LogInIcon className="mr-2 h-4 w-4" />,
     },

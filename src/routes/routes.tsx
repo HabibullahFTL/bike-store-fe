@@ -1,3 +1,7 @@
+import NotFoundWarning from '@/components/common/not-found-warning';
+import UnauthorizedWarning from '@/components/common/unauthorized-warning';
+
+import AdminDashboardLayout from '@/components/layouts/admin-dashboard-layout';
 import DashboardLayout from '@/components/layouts/dashboard-layout';
 import ProtectedRoute from '@/components/layouts/protected-route';
 import AboutPage from '@/pages/About';
@@ -12,7 +16,7 @@ import ProductDetailsPage from '@/pages/ProductDetails';
 import ProductsPage from '@/pages/Products';
 import ProfilePage from '@/pages/Profile';
 import RegistrationPage from '@/pages/Registration';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../App';
 
 const router = createBrowserRouter([
@@ -36,38 +40,51 @@ const router = createBrowserRouter([
         path: 'registration',
         element: <RegistrationPage />,
       },
-
       {
         path: 'products',
         element: <ProductsPage />,
       },
       {
-        path: 'dashboard',
-        element: <DashboardLayout />,
+        path: 'profile',
+        element: (
+          <ProtectedRoute role="customer">
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
         children: [
           {
             index: true,
-            element: (
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            ),
+            element: <ProfilePage />,
           },
           {
             path: 'my-orders',
-            element: (
-              <ProtectedRoute>
-                <MyOrders />
-              </ProtectedRoute>
-            ),
+            element: <MyOrders />,
+          },
+        ],
+      },
+      {
+        path: 'admin',
+        element: (
+          <ProtectedRoute role="admin">
+            <AdminDashboardLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Navigate to={'/admin/manage-users'} replace={true} />,
+          },
+          {
+            path: 'profile',
+            element: <ProfilePage />,
+          },
+          {
+            path: 'manage-users',
+            element: <ManageOrders />,
           },
           {
             path: 'manage-orders',
-            element: (
-              <ProtectedRoute>
-                <ManageOrders />
-              </ProtectedRoute>
-            ),
+            element: <ManageOrders />,
           },
         ],
       },
@@ -98,6 +115,18 @@ const router = createBrowserRouter([
             <PaymentVerifyPage />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: 'unauthorized',
+        element: <UnauthorizedWarning />,
+      },
+      {
+        path: '404',
+        element: <NotFoundWarning />,
+      },
+      {
+        path: '*',
+        element: <NotFoundWarning />,
       },
     ],
   },

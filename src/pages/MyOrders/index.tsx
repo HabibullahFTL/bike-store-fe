@@ -23,7 +23,7 @@ const MyOrders = () => {
   return (
     <>
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
-        Manage Orders
+        My Orders
       </h2>
 
       {isLoading ? (

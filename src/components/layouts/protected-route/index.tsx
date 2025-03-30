@@ -1,9 +1,5 @@
-import {
-  logout,
-  selectCurrentToken,
-  TUser,
-} from '@/redux/features/auth/authSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { selectCurrentToken, TUser } from '@/redux/features/auth/authSlice';
+import { useAppSelector } from '@/redux/hooks';
 import { verifyToken } from '@/utils/common/verify-token';
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -24,8 +20,6 @@ const ProtectedRoute = ({ children, role }: IProps) => {
     user = verifyToken(token) as TUser;
   }
 
-  const dispatch = useAppDispatch();
-
   const params = new URLSearchParams();
   if (location?.pathname) {
     params.append('to', location.pathname);
@@ -35,7 +29,9 @@ const ProtectedRoute = ({ children, role }: IProps) => {
 
   // If role is defined, and no user role matched
   if (role && (!user?.role || user?.role !== role)) {
-    dispatch(logout());
+    if (token) {
+      return <Navigate to={'/unauthorized'} replace={true} />;
+    }
     return <Navigate to={loginURL} replace={true} />;
   }
 
