@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { baseApiURL } from '@/lib/common/base-url';
 import { RootState } from '@/redux/store';
-import { baseApiURL } from '@/utils/common/base-url';
 import {
   BaseQueryApi,
   BaseQueryFn,
@@ -63,6 +63,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ['products', 'orders'],
+  tagTypes: ['products', 'orders', 'users'],
   endpoints: () => ({}),
 });

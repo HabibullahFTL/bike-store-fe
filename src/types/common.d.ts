@@ -53,3 +53,24 @@ export interface ITransaction {
   sp_code: string;
   status: null;
 }
+
+export interface IUserDetails {
+  _id: string;
+  name: string;
+  email: string;
+  role: TUserRole;
+  status: TUserStatus;
+  isDeleted?: boolean;
+
+  createdAt: string;
+  updatedAt: string;
+}
+export interface IGroupedSelectOption {
+  id: string;
+  label: string;
+  options: ISelectOption[];
+}
+export interface ISelectOption {
+  label: string;
+  value: string;
+}

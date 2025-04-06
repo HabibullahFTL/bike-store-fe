@@ -8,8 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { passwordValidationSchema } from '@/lib/validations/auth-validations';
 import { useChangePasswordMutation } from '@/redux/features/auth/authApi';
-import { passwordValidationSchema } from '@/utils/validations/auth-validations';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';

@@ -9,6 +9,7 @@ import CheckoutPage from '@/pages/Checkout';
 import HomePage from '@/pages/Home';
 import LoginPage from '@/pages/Login';
 import ManageOrders from '@/pages/ManageOrders';
+import ManageUsers from '@/pages/ManageUsers';
 import MyOrders from '@/pages/MyOrders';
 import OrderDetailsPage from '@/pages/OrderDetails';
 import PaymentVerifyPage from '@/pages/PaymentVerify';
@@ -80,7 +81,7 @@ const router = createBrowserRouter([
           },
           {
             path: 'manage-users',
-            element: <ManageOrders />,
+            element: <ManageUsers />,
           },
           {
             path: 'manage-orders',

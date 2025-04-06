@@ -1,6 +1,6 @@
+import { verifyToken } from '@/lib/common/verify-token';
 import { selectCurrentToken, TUser } from '@/redux/features/auth/authSlice';
 import { useAppSelector } from '@/redux/hooks';
-import { verifyToken } from '@/utils/common/verify-token';
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
