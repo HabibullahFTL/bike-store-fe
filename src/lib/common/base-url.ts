@@ -1,1 +1,1 @@
-export const baseApiURL = 'http://localhost:3500/api';
+export const baseApiURL = process.env.BASE_API_URL;

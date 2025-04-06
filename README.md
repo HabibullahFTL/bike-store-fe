@@ -1,4 +1,12 @@
-# Test credentials
+# Bike Store Frontend
+
+A modern and responsive frontend application for the Bike Store, built using React and Vite. This frontend provides a smooth user experience for browsing bikes, managing orders, and handling admin operations with robust form validation, API integration, and state management.
+
+## Live Demo
+
+Check out the live version of the Bike Store Frontend: https://bike-store-test.vercel.app/
+
+## Test credentials
 
 - Admin
   - Email: admin@bikestore.com
@@ -7,53 +15,75 @@
   - Email: customer@bikestore.com
   - Password: Customer123
 
-# React + TypeScript + Vite
+## Features
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 🚲 Products
 
-Currently, two official plugins are available:
+- View all bikes with filters (brand, name, category).
+- See individual bike details.
+- Create, update, and delete bikes (admin only).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 📦 Orders
 
-## Expanding the ESLint configuration
+- Place an order for a bike.
+- Verify payments through Surjo Pay.
+- Track and update order statuses.
+- Admin can manage and view all orders with revenue stats.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### 👤 User Management
 
-- Configure the top-level `parserOptions` property like this:
+- Customer registration.
+- Admin can create new admins.
+- Admin can block/unblock users and change roles.
+- Role-based access control across routes.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+## 💡 UX & UI
+
+- Modern and responsive UI with Tailwind CSS.
+- Accessible components via Radix UI.
+- Toast notifications, modals, sliders, and more.
+
+## 🧠 State & Forms
+
+- Global state management using Redux Toolkit and Redux Persist.
+- Powerful form handling with React Hook Form and Zod schema validation.
+
+## Technologies Used
+
+### 🛠 Frontend Stack
+
+- React 19 (with Vite)
+- TypeScript
+- Redux Toolkit + Redux Persist
+- React Router DOM
+- React Hook Form + Zod
+- Radix UI for accessible components
+- Tailwind CSS + tailwindcss-animate
+- Lucide React and React Icons
+- Swiper for carousels
+- Date-fns and Lodash for utilities
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v16 or higher
+- Backend API running
+  - Live API url: https://bike-store-test.vercel.app/
+  - Repository: https://github.com/HabibullahFTL/bike-store-node-js.git
+
+### Installation
+
+```bash
+git clone <repository-link>
+cd bike-store-fe
+yarn install
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Running the App
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-});
+```bash
+yarn dev
 ```
+
+Open the app at http://localhost:5173
