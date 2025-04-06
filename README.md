@@ -4,7 +4,7 @@ A modern and responsive frontend application for the Bike Store, built using Rea
 
 ## Live Demo
 
-Check out the live version of the Bike Store Frontend: https://bike-store-test.vercel.app/
+Check out the live version of the Bike Store Frontend: https://bike-store-fe.vercel.app/
 
 ## Test credentials
 
@@ -69,7 +69,7 @@ Check out the live version of the Bike Store Frontend: https://bike-store-test.v
 
 - Node.js v16 or higher
 - Backend API running
-  - Live API url: https://bike-store-test.vercel.app/
+  - Live API url: https://bike-store-be.vercel.app/
   - Repository: https://github.com/HabibullahFTL/bike-store-node-js.git
 
 ### Installation
