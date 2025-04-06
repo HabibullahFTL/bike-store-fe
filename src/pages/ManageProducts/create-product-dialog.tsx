@@ -15,6 +15,7 @@ import {
 } from '@/redux/features/products/productsApi';
 import { TProduct } from '@/types/common'; // Make sure this type exists and is correct
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
@@ -31,9 +32,9 @@ const validationSchema = z.object({
   name: z.string().min(1, 'Product name is required'),
   description: z.string().min(1, 'Product description is required'),
   brand: z.string().min(1, 'Product brand is required'),
-  price: z.number().min(1, 'Product price is required'),
+  price: z.coerce.number().min(1, 'Product price is required'),
   category: z.string().min(1, 'Product category is required'),
-  quantity: z.number().min(1, 'Product quantity is required'),
+  quantity: z.coerce.number().min(1, 'Product quantity is required'),
 });
 
 const CreateOrUpdateProductDialog = ({
@@ -58,6 +59,25 @@ const CreateOrUpdateProductDialog = ({
     },
   });
 
+  useEffect(() => {
+    if (isUpdating && product) {
+      formMethods.reset({
+        name: product?.name,
+        description: product?.description,
+        brand: product?.brand,
+        category: product?.category,
+        price: product?.price,
+        quantity: product?.quantity,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpdating, product]);
+
+  const handleClose = (state: boolean) => {
+    onClose(state);
+    formMethods.reset();
+  };
+
   const onSubmit = async (values: z.infer<typeof validationSchema>) => {
     const payload = {
       ...values,
@@ -68,9 +88,12 @@ const CreateOrUpdateProductDialog = ({
       // Update product
       toast.loading('Updating product...', { id: 'update-product' });
       try {
-        await updateProduct({ id: product._id, body: payload }).unwrap();
+        await updateProduct({
+          _id: product._id,
+          ...payload,
+        }).unwrap();
         toast.success('Product updated successfully', { id: 'update-product' });
-        onClose(false);
+        handleClose(false);
       } catch (error) {
         toast.error(
           (error as { data: { message: string } })?.data?.message ||
@@ -84,7 +107,7 @@ const CreateOrUpdateProductDialog = ({
       try {
         await createProduct(payload).unwrap();
         toast.success('Product created successfully', { id: 'create-product' });
-        onClose(false);
+        handleClose(false);
       } catch (error) {
         toast.error(
           (error as { data: { message: string } })?.data?.message ||
@@ -98,7 +121,7 @@ const CreateOrUpdateProductDialog = ({
   const isLoading = isCreating || isUpdatingProduct;
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>

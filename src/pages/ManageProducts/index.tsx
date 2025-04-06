@@ -23,20 +23,76 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useGetAllProductsQuery } from '@/redux/features/products/productsApi';
+import useConfirm from '@/hooks/use-confirm';
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+} from '@/redux/features/products/productsApi';
+import { TProduct } from '@/types/common';
 import { MoreHorizontalIcon, PlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import CreateProductDialog from './create-product-dialog';
 
 const ManageProducts = () => {
+  const [selectedProduct, setSelectedProduct] = useState<TProduct>();
+  const [DeleteDialog, confirmDelete] = useConfirm({
+    title: <>Are you sure you want to delete the product ?</>,
+    description: (
+      <>
+        You are going to delete the product{' '}
+        <span className="text-red-500 font-medium">
+          {selectedProduct?.name}
+        </span>
+        . This action cannot be undone after deleting.
+      </>
+    ),
+  });
+
   const limit = 10;
   const [page, setPage] = useState(1);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const { data, isLoading, isFetching } = useGetAllProductsQuery({
     page,
     limit,
   });
+  const [deleteProduct] = useDeleteProductMutation();
+
+  const handleEditProduct = async (product: TProduct) => {
+    setSelectedProduct(product);
+    setShowUpdateModal(true);
+  };
+  const handleDeleteProduct = async (product: TProduct) => {
+    setSelectedProduct(product);
+
+    const ok = await confirmDelete();
+
+    if (!ok) {
+      setSelectedProduct(undefined);
+      return;
+    }
+    toast.loading('Deleting the product...', { id: 'deleting-product' });
+    deleteProduct(product?._id)
+      .unwrap()
+      .then((res) => {
+        if (res?.success) {
+          toast.success('Deleted the product successfully', {
+            id: 'deleting-product',
+          });
+        } else {
+          toast.error('Failed to delete the product', {
+            id: 'deleting-product',
+          });
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.data?.message || 'Failed to delete the product', {
+          id: 'deleting-product',
+        });
+      });
+  };
 
   const totalPages = data?.meta?.totalPages || 1;
 
@@ -102,12 +158,12 @@ const ManageProducts = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
-                        // onClick={() => handleEditProduct(product._id)}
+                          onClick={() => handleEditProduct(product)}
                         >
                           Edit Product
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                        // onClick={() => handleDeleteProduct(product._id)}
+                          onClick={() => handleDeleteProduct(product)}
                         >
                           Delete Product
                         </DropdownMenuItem>
@@ -168,9 +224,16 @@ const ManageProducts = () => {
           </PaginationContent>
         </Pagination>
       </div>
+      <DeleteDialog />
       <CreateProductDialog
-        open={showCreateModal}
-        onClose={(state) => setShowCreateModal(state)}
+        isUpdating={showUpdateModal}
+        product={showUpdateModal ? selectedProduct : undefined}
+        open={showCreateModal || showUpdateModal}
+        onClose={(state) => {
+          setSelectedProduct(undefined);
+          setShowCreateModal(state);
+          setShowUpdateModal(state);
+        }}
       />
     </>
   );

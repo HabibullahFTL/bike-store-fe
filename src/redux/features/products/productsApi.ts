@@ -5,7 +5,7 @@ const productsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     createProduct: builder.mutation({
       query: (productInfo) => ({
-        url: '/productss',
+        url: '/products',
         method: 'POST',
         body: productInfo,
       }),
@@ -19,10 +19,24 @@ const productsApi = baseApi.injectEndpoints({
       },
     }),
     updateProduct: builder.mutation({
-      query: (productInfo) => ({
+      query: (productInfo: Partial<TProduct>) => ({
         url: `/products/${productInfo?._id}`,
         method: 'PATCH',
         body: productInfo,
+      }),
+      invalidatesTags: ['products'],
+      transformResponse: (response) => {
+        return response as unknown as {
+          data: TProduct;
+          success: boolean;
+          message: string;
+        };
+      },
+    }),
+    deleteProduct: builder.mutation({
+      query: (productId: string) => ({
+        url: `/products/${productId}`,
+        method: 'DELETE',
       }),
       invalidatesTags: ['products'],
       transformResponse: (response) => {
@@ -98,4 +112,5 @@ export const {
   useGetProductDataQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
+  useDeleteProductMutation,
 } = productsApi;
