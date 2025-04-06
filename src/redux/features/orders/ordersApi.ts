@@ -69,6 +69,21 @@ const ordersApi = baseApi.injectEndpoints({
         return result?.data;
       },
     }),
+    changeOrderStatus: builder.mutation({
+      query: (orderInfo: { id: string; status: string }) => ({
+        url: `/orders/update-status/${orderInfo?.id}`,
+        method: 'PATCH',
+        body: orderInfo,
+      }),
+      invalidatesTags: ['orders'],
+      transformResponse: (response) => {
+        const result = response as unknown as {
+          success: boolean;
+          data: { _id: string; checkoutURL: string };
+        };
+        return result?.success ? result?.data : undefined;
+      },
+    }),
   }),
 });
 
@@ -76,5 +91,6 @@ export const {
   useCreateOrderMutation,
   useVerifyPaymentQuery,
   useOrderDetailsQuery,
+  useChangeOrderStatusMutation,
   useOrdersQuery,
 } = ordersApi;

@@ -30,7 +30,7 @@ const ManageOrders = () => {
         <Container className="py-28 text-center">
           <p className="text-gray-500 text-lg">Loading orders...</p>
         </Container>
-      ) : (
+      ) : (data?.data || [])?.length > 0 ? (
         <div className="grid gap-3">
           {data?.data?.map((order) => (
             <OrderCard
@@ -39,6 +39,10 @@ const ManageOrders = () => {
               showManageOptions={true}
             />
           ))}
+        </div>
+      ) : (
+        <div className="h-40 flex justify-center items-center text-lg text-gray-500">
+          No items found
         </div>
       )}
 

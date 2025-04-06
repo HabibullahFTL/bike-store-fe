@@ -1,4 +1,5 @@
 import bikeImage from '@/assets/bike-image.png';
+import OrderTimeline from '@/components/common/order-timeline';
 import Container from '@/components/layouts/main-layout/container';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -56,7 +57,7 @@ const OrderDetailsPage = () => {
       </Button>
       <div className="grid gap-4 md:grid-cols-2">
         {/* Product Card */}
-        <div className="">
+        <div className="space-y-4">
           <Card className="border rounded-lg shadow-md">
             <CardHeader>
               <CardTitle className="text-lg font-semibold">
@@ -87,6 +88,8 @@ const OrderDetailsPage = () => {
               </div>
             </CardContent>
           </Card>
+
+          <OrderTimeline timeline={order?.timeLine || []} />
         </div>
 
         {/* Order Details */}

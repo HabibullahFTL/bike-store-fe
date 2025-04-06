@@ -39,6 +39,8 @@ export interface IOrderData {
   quantity: number;
   totalPrice: number;
   shippingAddress: string;
+  status: string;
+  timeLine: Pick<ITimelineStep, 'status' | 'date_time'>[];
   transaction?: ITransaction;
   createdAt: Date;
   updatedAt: Date;
@@ -74,3 +76,8 @@ export interface ISelectOption {
   label: string;
   value: string;
 }
+export type ITimelineStep = {
+  status: string;
+  date_time: string;
+  completed?: boolean;
+};

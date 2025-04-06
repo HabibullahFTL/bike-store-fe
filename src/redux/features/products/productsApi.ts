@@ -3,6 +3,36 @@ import { baseApi } from '../../api/baseApi';
 
 const productsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    createProduct: builder.mutation({
+      query: (productInfo) => ({
+        url: '/productss',
+        method: 'POST',
+        body: productInfo,
+      }),
+      invalidatesTags: ['products'],
+      transformResponse: (response) => {
+        return response as unknown as {
+          data: TProduct;
+          success: boolean;
+          message: string;
+        };
+      },
+    }),
+    updateProduct: builder.mutation({
+      query: (productInfo) => ({
+        url: `/products/${productInfo?._id}`,
+        method: 'PATCH',
+        body: productInfo,
+      }),
+      invalidatesTags: ['products'],
+      transformResponse: (response) => {
+        return response as unknown as {
+          data: TProduct;
+          success: boolean;
+          message: string;
+        };
+      },
+    }),
     getAllProducts: builder.query({
       query: (args?: TProductQuery) => {
         const page = (args?.page || '1')?.toString();
@@ -63,4 +93,9 @@ const productsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetAllProductsQuery, useGetProductDataQuery } = productsApi;
+export const {
+  useGetAllProductsQuery,
+  useGetProductDataQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+} = productsApi;

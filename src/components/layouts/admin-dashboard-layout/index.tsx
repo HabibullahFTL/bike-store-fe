@@ -10,12 +10,16 @@ const AdminDashboardLayout = () => {
       title: 'Profile Settings',
     },
     {
+      href: '/admin/all-products',
+      title: 'All Products',
+    },
+    {
       href: '/admin/manage-users',
-      title: 'Manage Users',
+      title: 'All Users',
     },
     {
       href: '/admin/manage-orders',
-      title: 'Manage Orders',
+      title: 'All Orders',
     },
   ];
 
